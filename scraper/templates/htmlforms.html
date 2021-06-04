@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<p class="lead">Enter the Artist's name you want to search songs for eg. Khaligraph</p>
+<form action="/hf/artist-songs" method="post">
+  {% csrf_token %}
+  <label for="artist_name">Artist Name:</label>
+  <input type="text" id="name" name="artist_name" required>
+  <input type="submit" value="Submit">
+</form>
+
+<br><p class="lead">
+          Enter the prefix/ first letter to the name of artists you want to reveal 
+          <br> or enter '#', '/', '.', '?' or blank Space(s) to reveal featured artists 
+    </p>
+<form action="/hf/artist-list" method="post">
+  {% csrf_token %}
+  <label for="artist_prefix">Name Prefix:</label>
+  <input type="text" id="prefix" name="artist_prefix" required maxlength="1">
+  <input type="submit" value="Submit">
+</form>
+{% endblock %}

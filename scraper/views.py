@@ -14,39 +14,41 @@ def indexDF(request):  # indexDF - Index Django Form
     Form2 gets input to list artists with names
     starting with the prefix provided
     """
-    if request.method == 'POST':
+    if request.method == "POST":
         form = ArtistForm(request.POST)
         form2 = ArtistPrefix(request.POST)
         if form.is_valid():
-            the_songs = find_songs(str(form.cleaned_data['artist_name']))
+            the_songs = find_songs(str(form.cleaned_data["artist_name"]))
 
             if the_songs == []:
                 return HttpResponse(
-                    f'No results for {form.cleaned_data["artist_name"]}')
+                    f'No results for {form.cleaned_data["artist_name"]}'
+                )
 
-            artistname = str(form.cleaned_data['artist_name'])
-            return JsonResponse({f'Search Result for {artistname}': the_songs},
-                                safe=False)
+            artistname = str(form.cleaned_data["artist_name"])
+            return JsonResponse(
+                {f"Search Result for {artistname}": the_songs}, safe=False
+            )
 
         elif form2.is_valid():
-            names = list_artists(form2.cleaned_data['name_prefix'])
-            the_prefix = str(form2.cleaned_data['name_prefix'])
+            names = list_artists(form2.cleaned_data["name_prefix"])
+            the_prefix = str(form2.cleaned_data["name_prefix"])
             if names == []:
                 return HttpResponse(
-                    f'No results for "{form2.cleaned_data["name_prefix"]}"')
+                    f'No results for "{form2.cleaned_data["name_prefix"]}"'
+                )
 
             return JsonResponse(
-                {f'Artsits name starting with {the_prefix}': names},
-                safe=False)
+                {f"Artsits name starting with {the_prefix}": names}, safe=False
+            )
 
         else:
-            return HttpResponse('Please input some valid data')
+            return HttpResponse("Please input some valid data")
 
     else:
         form = ArtistForm()
         form2 = ArtistPrefix()
-        return render(request, 'djangoforms.html',
-                      {'form': form, 'form2': form2})
+        return render(request, "djangoforms.html", {"form": form, "form2": form2})
 
 
 def indexHF(request):  # indexHF - index HTML Form
@@ -56,7 +58,7 @@ def indexHF(request):  # indexHF - index HTML Form
     this view produces 2 forms that are coded into the HTML file
     Basically has the same functionality as in indexDF
     """
-    return render(request, 'htmlforms.html')
+    return render(request, "htmlforms.html")
 
 
 def HFresultsAN(request):  # HFresultsAN - HTML Form results Artist Name
@@ -64,14 +66,13 @@ def HFresultsAN(request):  # HFresultsAN - HTML Form results Artist Name
     This View gets the artist name from the IndexHF artist name form
     and returns the result in JSON Format
     """
-    name = request.POST['artist_name']
+    name = request.POST["artist_name"]
     the_songs = find_songs(str(name))
     if the_songs != []:
-        return JsonResponse(
-            {f'Search Resulst for {name}': the_songs}, safe=False)
+        return JsonResponse({f"Search Resulst for {name}": the_songs}, safe=False)
 
     else:
-        return HttpResponse('Please Input a valid artist name')
+        return HttpResponse("Please Input a valid artist name")
 
 
 def HFresultsAP(request):  # HFresultsAP - HTML Form results Artist Prefix
@@ -79,11 +80,10 @@ def HFresultsAP(request):  # HFresultsAP - HTML Form results Artist Prefix
     This View gets the prefix from the IndexHF prefix form
     and returns the result in JSON Format
     """
-    prefix = request.POST['artist_prefix']
+    prefix = request.POST["artist_prefix"]
     names = list_artists(prefix)
     if names != []:
-        return JsonResponse(
-            {f'Artsits Name starting with {prefix}': names}, safe=False)
+        return JsonResponse({f"Artsits Name starting with {prefix}": names}, safe=False)
 
     else:
-        return HttpResponse('Please input a valid prefix')
+        return HttpResponse("Please input a valid prefix")
